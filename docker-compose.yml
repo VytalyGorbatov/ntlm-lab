@@ -1,0 +1,60 @@
+services:
+  ntlm_server:
+    build: ./server
+    container_name: ntlm_server
+    networks:
+      ntlmnet:
+        ipv4_address: 172.24.0.10
+    ports:
+      - "445:445"
+      - "139:139"
+      - "135:135"
+    environment:
+      - ENABLE_CAPTURE=false
+    volumes:
+      - ./shared:/opt/shared
+    restart: unless-stopped
+
+  ntlm_client:
+    build: ./client
+    container_name: ntlm_client
+    networks:
+      ntlmnet:
+        ipv4_address: 172.24.0.20
+    environment:
+      - SERVER_IP=172.24.0.10
+      - SERVER_PORT=445
+      - COUNT=100
+    volumes:
+      - ./shared:/opt/shared
+      - ./client:/opt/client
+    depends_on:
+      - ntlm_server
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  ntlm_attacker:
+    build: ./client
+    container_name: ntlm_attacker
+    networks:
+      ntlmnet:
+        ipv4_address: 172.24.0.30
+    environment:
+      - SERVER_IP=172.24.0.10
+      - SERVER_PORT=445
+    volumes:
+      - ./shared:/opt/shared
+      - ./client:/opt/client
+    depends_on:
+      - ntlm_server
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+networks:
+  ntlmnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.24.0.0/16

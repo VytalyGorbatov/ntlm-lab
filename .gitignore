@@ -1,0 +1,16 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PCAP captures
+*.pcap
+*.pcapng
+shared/pcaps/
+
+# Large generated dataset JSON/JSONL dumps and backups
+shared/datasets/*.json
+shared/datasets/*.jsonl
+shared/datasets/splits/**/train.json*
+shared/datasets/splits/**/val.json*
+shared/datasets/splits/**/test.json*

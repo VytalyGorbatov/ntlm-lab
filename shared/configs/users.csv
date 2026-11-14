@@ -1,0 +1,8 @@
+username,password,role
+admin,AdminPassword123!,admin
+testuser,TestPassword123!,standard
+user1,User1Password!,standard
+user2,User2Password!,standard
+user3,User3Password!,standard
+user4,User4Password!,finance
+user5,User5Password!,dev
